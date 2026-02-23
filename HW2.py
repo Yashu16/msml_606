@@ -1,4 +1,12 @@
 import csv
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent
+
+
+def data_file(filename: str) -> Path:
+    return BASE_DIR / filename
+
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -24,10 +32,21 @@ class HomeWork2:
     #     3   4
 
     def constructBinaryTree(self, input) -> TreeNode:
-        pass
-
-
-
+        #we will take stack data structure, so we can easily connect the children nodes with parent nodes
+        stack = []
+        operator = ['+', '-', '*', '/']
+        for i in input:
+            # Creating a node for each input value when looping
+            new_node = TreeNode(i)
+            if i in operator:
+                #if it's an operator, we need the numbers to be it's children
+                #And since it's a postfix expression, and stack is LIFO, we pop the top element to assign it as right child and only then left
+                new_node.right = stack.pop()
+                new_node.left = stack.pop()
+            #storing nodes in stack
+            stack.append(new_node)
+        return stack[0] #this final node will have all connections
+    
     # Problem 2.1: Use pre-order traversal (root, left, right) to generate prefix notation
     # return an array of elements of a prefix expression
     # expected output for the tree from problem 1 is [*,+,3,4,2]
@@ -96,7 +115,7 @@ if __name__ == "__main__":
     print("\nRUNNING TEST CASES FOR PROBLEM 1")
     testcases = []
     try:
-        with open('p1_construct_tree.csv', 'r') as f:
+        with open(data_file('p1_construct_tree.csv'), 'r') as f:
             testcases = list(csv.reader(f))
     except FileNotFoundError:
         print("p1_construct_tree.csv not found")
@@ -112,7 +131,7 @@ if __name__ == "__main__":
 
     print("\nRUNNING TEST CASES FOR PROBLEM 2")
     testcases = []
-    with open('p2_traversals.csv', 'r') as f:
+    with open(data_file('p2_traversals.csv'), 'r') as f:
         testcases = list(csv.reader(f))
 
     for i, row in enumerate(testcases, 1):
@@ -130,7 +149,7 @@ if __name__ == "__main__":
     print("\nRUNNING TEST CASES FOR PROBLEM 3")
     testcases = []
     try:
-        with open('p3_eval_postfix.csv', 'r') as file:
+        with open(data_file('p3_eval_postfix.csv'), 'r') as file:
             reader = csv.reader(file)
             for row in reader:
                 testcases.append(row)

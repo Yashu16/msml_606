@@ -48,7 +48,7 @@ class HomeWork2:
         arr_1 = []
         if head is None:
             return arr_1
-        arr_1.append(head)
+        arr_1.append(head.val)
         self.prefixNotationPrint(head.left)
         self.prefixNotationPrint(head.right)        
 
@@ -62,8 +62,12 @@ class HomeWork2:
     # treat parentheses as individual elements in the returned list (see output)
 
     def infixNotationPrint(self, head: TreeNode) -> list:
-        pass
-
+        arr_2 = []
+        if head is None:
+            return arr_2
+        self.infixNotationPrint(head.left)
+        arr_2.append(head.val) 
+        self.infixNotationPrint(head.right)
 
     # Problem 2.3: Use post-order traversal (left, right, root) to generate postfix notation.
     # return an array of elements of a postfix expression

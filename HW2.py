@@ -24,20 +24,20 @@ class HomeWork2:
     #     3   4
 
     def constructBinaryTree(self, input) -> TreeNode:
-        #we will take stack data structure, so we can easily connect the children nodes with parent nodes
+        # we will take stack data structure, so we can easily connect the children nodes with parent nodes
         stack = []
         operator = ['+', '-', '*', '/']
         for i in input:
             # Creating a node for each input value when looping
             new_node = TreeNode(i)
             if i in operator:
-                #if it's an operator, we need the numbers to be it's children
-                #And since it's a postfix expression, and stack is LIFO, we pop the top element to assign it as right child and only then left
+                # if it's an operator, we need the numbers to be it's children
+                # And since it's a postfix expression, and stack is LIFO, we pop the top element to assign it as right child and only then left
                 new_node.right = stack.pop()
                 new_node.left = stack.pop()
-            #storing nodes in stack
+            # storing nodes in stack
             stack.append(new_node)
-        return stack[0] #this final node will have all connections
+        return stack[0] # this final node will have all connections
     
     # Problem 2.1: Use pre-order traversal (root, left, right) to generate prefix notation
     # return an array of elements of a prefix expression
@@ -62,12 +62,13 @@ class HomeWork2:
     # treat parentheses as individual elements in the returned list (see output)
 
     def infixNotationPrint(self, head: TreeNode) -> list:
-        arr_2 = []
         if head is None:
-            return arr_2
-        self.infixNotationPrint(head.left)
-        arr_2.append(head.val) 
-        self.infixNotationPrint(head.right)
+            return []
+        if head.left is None and head.right is None:
+            return [head.val] # this val is returned for each recursion call of left and right
+        left = self.infixNotationPrint(head.left)
+        right = self.infixNotationPrint(head.right)
+        return ['(']+ left + [head.val] + right + [')'] # the head val here is parent node of two children since inorder goes [left, root, right]
 
     # Problem 2.3: Use post-order traversal (left, right, root) to generate postfix notation.
     # return an array of elements of a postfix expression
@@ -75,8 +76,11 @@ class HomeWork2:
     # you can see the examples in p2_traversals.csv
 
     def postfixNotationPrint(self, head: TreeNode) -> list:
-        pass
-
+        if head is None:
+            return []
+        left = self.postfixNotationPrint(head.left)
+        right = self.postfixNotationPrint(head.right)
+        return left + right + [head.val] 
 
 class Stack:
     # Implement your stack using either an array or a list

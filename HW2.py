@@ -112,7 +112,7 @@ class Stack:
         self.top_ind -= 1
         return val 
     
-    def peek(self):
+    def top(self):
         if self.isEmpty():
             return None
         return self.stack[self.top_ind]
@@ -130,10 +130,28 @@ class Stack:
 
     # DO NOT USE EVAL function for evaluating the expression
 
-    def evaluatePostfix(exp: str) -> int:
+    def evaluatePostfix(self, exp: str) -> int:
         # TODO: implement this using your Stack class
-        pass
-
+        s = Stack()
+        ex = exp.split()
+        for e in ex: 
+            if e in "+-*/":
+                # since we are dealing with postfix, the top element of stack will be second operand
+                y = s.pop()
+                x = s.pop()
+                if e == "+":
+                    s.push(x + y)
+                elif e == "-":
+                    s.push(x - y)
+                elif e == "*":
+                    s.push(x * y)
+                else:
+                    if y == 0:
+                        raise ZeroDivisionError("division by zero")
+                    s.push(int(x/y))
+            else:
+                s.push(int(e))
+        return s.pop()
 
 # Main Function. Do not edit the code below
 if __name__ == "__main__":

@@ -46,7 +46,7 @@ class HomeWork2:
 
     def prefixNotationPrint(self, head: TreeNode) -> list:
         if head is None:
-            return []
+            return [] # base case
         left = self.prefixNotationPrint(head.left)
         right = self.prefixNotationPrint(head.right)
         return [head.val] + left + right
@@ -62,7 +62,7 @@ class HomeWork2:
 
     def infixNotationPrint(self, head: TreeNode) -> list:
         if head is None:
-            return []
+            return [] # base case
         if head.left is None and head.right is None:
             return [head.val] # this val is returned for each recursion call of left and right
         left = self.infixNotationPrint(head.left)
@@ -76,7 +76,7 @@ class HomeWork2:
 
     def postfixNotationPrint(self, head: TreeNode) -> list:
         if head is None:
-            return []
+            return [] # base case
         left = self.postfixNotationPrint(head.left)
         right = self.postfixNotationPrint(head.right)
         return left + right + [head.val] 
@@ -92,7 +92,30 @@ class Stack:
 
     def __init__(self):
         # TODO: initialize the stack
-        pass
+        self.stack = []
+        self.top_ind = -1 # initially pointing to NONE (stack is empty)
+        
+    def push(self, val):
+        self.top_ind += 1
+        if self.top_ind < len(self.stack):
+            self.stack[self.top_ind] = val # The way I implemented the stack, if you were to pop an element, it would decrement top_ind pointer by 1, the data still exists. So, we overwrite it when length of stack is greater. 
+        else: # otherwise
+            self.stack.append(val) # used to grow our stack
+    
+    def isEmpty(self):
+        return self.top_ind == -1
+    
+    def pop(self):
+        if self.isEmpty():
+            raise IndexError("can't pop from empty stack")
+        val = self.stack[self.top_ind]
+        self.top_ind -= 1
+        return val 
+    
+    def peek(self):
+        if self.isEmpty():
+            return None
+        return self.stack[self.top_ind]
 
     # Problem 3: Write code to evaluate a postfix expression using stack and return the integer value
     # Use stack which you implemented above for this problem

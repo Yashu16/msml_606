@@ -133,12 +133,13 @@ class Stack:
     def evaluatePostfix(self, exp: str) -> int:
         # TODO: implement this using your Stack class
         s = Stack()
-        ex = exp.split()
+        ex = exp.split() # since exp is a string, we are splitting to deal with whitespaces
         for e in ex: 
-            if e in "+-*/":
+            if e in "+-*/": 
                 # since we are dealing with postfix, the top element of stack will be second operand
                 y = s.pop()
                 x = s.pop()
+                # appropriate operations based on the operand
                 if e == "+":
                     s.push(x + y)
                 elif e == "-":
@@ -147,10 +148,10 @@ class Stack:
                     s.push(x * y)
                 else:
                     if y == 0:
-                        raise ZeroDivisionError("division by zero")
-                    s.push(int(x/y))
+                        raise ZeroDivisionError("division by zero") # handled zero division error
+                    s.push(int(x/y)) # converting float to int
             else:
-                s.push(int(e))
+                s.push(int(e)) # using int to handle negative numbers (rounding them off towards zero)
         return s.pop()
 
 # Main Function. Do not edit the code below

@@ -151,7 +151,7 @@ class Stack:
                         raise ZeroDivisionError("division by zero") # handled zero division error
                     s.push(int(x/y)) # converting float to int
             else:
-                s.push(int(e)) # using int to handle negative numbers (rounding them off towards zero)
+                s.push(int(e)) # edge case - using int to handle negative numbers (rounding them off towards zero)
         return s.pop()
 
 # Main Function. Do not edit the code below

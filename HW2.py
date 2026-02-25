@@ -1,5 +1,5 @@
 # I have added Citation at the end of this whole code...
-# My comments are only within the space I was asked to code except for one final code I added in the test space to handle Invalid tokens
+# My explanation is within the space I was asked to code except for one final code I added in the test space to handle Invalid tokens
 import csv
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -26,8 +26,8 @@ class HomeWork2:
     #     3   4
 
     def constructBinaryTree(self, input) -> TreeNode:
-        if input is None:
-            return None # Handling empty input
+        if not input:
+            raise ValueError("Given empty input!")
         # we will take stack data structure, so we can easily connect the children nodes with parent nodes
         stack = []
         operator = ['+', '-', '*', '/']
@@ -35,12 +35,16 @@ class HomeWork2:
             # Creating a node for each input value when looping
             new_node = TreeNode(i)
             if i in operator:
+                if len(stack) < 2:
+                    raise ValueError(f"Invalid expression: operatior '{i}' requires 2 operands but only {len(stack)} available")
                 # if it's an operator, we need the numbers to be it's children
                 # And since it's a postfix expression, and stack is LIFO, we pop the top element to assign it as right child and only then left
                 new_node.right = stack.pop()
                 new_node.left = stack.pop()
             # storing nodes in stack
             stack.append(new_node)
+        if len(stack) != 1:
+            raise ValueError(f"Invalid expression: expected 1 root node, but found {len(stack)} available")
         return stack[0] # this final node will have all connections
     
     # Problem 2.1: Use pre-order traversal (root, left, right) to generate prefix notation
@@ -180,7 +184,6 @@ if __name__ == "__main__":
             testcases = list(csv.reader(f))
     except FileNotFoundError:
         print("p1_construct_tree.csv not found")
-
     for i, (postfix_input,) in enumerate(testcases, 1):
         postfix = postfix_input.split(",")
 

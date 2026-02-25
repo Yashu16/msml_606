@@ -24,6 +24,8 @@ class HomeWork2:
     #     3   4
 
     def constructBinaryTree(self, input) -> TreeNode:
+        if input is None:
+            return None # Handling empty input
         # we will take stack data structure, so we can easily connect the children nodes with parent nodes
         stack = []
         operator = ['+', '-', '*', '/']
@@ -111,7 +113,8 @@ class Stack:
         val = self.stack[self.top_ind]
         self.top_ind -= 1
         return val 
-    
+    def size(self):
+        return self.top_ind + 1 # if top_ind = -1, then our size is 0. So, size is always an increment by 1 of top index.
     def top(self):
         if self.isEmpty():
             return None
@@ -132,10 +135,14 @@ class Stack:
 
     def evaluatePostfix(self, exp: str) -> int:
         # TODO: implement this using your Stack class
+        if not exp or not exp.strip():
+            raise ValueError("No valid string given")
         s = Stack()
         ex = exp.split() # since exp is a string, we are splitting to deal with whitespaces
-        for e in ex: 
+        for e in ex:
             if e in "+-*/": 
+                if s.size() < 2: # making sure we have enough numbers to pop, to perform operations
+                    return "Not enough operands"
                 # since we are dealing with postfix, the top element of stack will be second operand
                 y = s.pop()
                 x = s.pop()
@@ -151,8 +158,12 @@ class Stack:
                         raise ZeroDivisionError("division by zero") # handled zero division error
                     s.push(int(x/y)) # converting float to int
             else:
-                s.push(int(e)) # edge case - using int to handle negative numbers (rounding them off towards zero)
-        return s.pop()
+                try:
+                    s.push(int(e)) # edge case - using int to handle negative numbers (rounding them off towards zero)
+                except ValueError:
+                    raise ValueError(f"Invalid token: '{e}' is not a valid number or operator")
+        return s.pop() 
+# Python's int can handle very large numbers so I don't think I have to add any special case for that!
 
 # Main Function. Do not edit the code below
 if __name__ == "__main__":
@@ -218,3 +229,7 @@ if __name__ == "__main__":
         except ZeroDivisionError:
             assert expected == "DIVZERO", f"Test {idx} unexpected division by zero"
             print(f"Test case {idx} passed (division by zero handled)")
+        # I have added below value error to handle value error         
+        except ValueError:
+            assert expected == "INVALID", f"Test {idx} unexpected invalid input error"
+            print(f"Test case {idx} passed (invalid input handled)")

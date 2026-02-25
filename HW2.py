@@ -1,3 +1,5 @@
+# I have added Citation at the end of this whole code...
+# My comments are only within the space I was asked to code except for one final code I added in the test space to handle Invalid tokens
 import csv
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -113,8 +115,10 @@ class Stack:
         val = self.stack[self.top_ind]
         self.top_ind -= 1
         return val 
+    
     def size(self):
         return self.top_ind + 1 # if top_ind = -1, then our size is 0. So, size is always an increment by 1 of top index.
+    
     def top(self):
         if self.isEmpty():
             return None
@@ -136,7 +140,7 @@ class Stack:
     def evaluatePostfix(self, exp: str) -> int:
         # TODO: implement this using your Stack class
         if not exp or not exp.strip():
-            raise ValueError("No valid string given")
+            raise ValueError("No valid string given") # This is raised whenever we are given an empty string or just whitespace
         s = Stack()
         ex = exp.split() # since exp is a string, we are splitting to deal with whitespaces
         for e in ex:
@@ -161,9 +165,9 @@ class Stack:
                 try:
                     s.push(int(e)) # edge case - using int to handle negative numbers (rounding them off towards zero)
                 except ValueError:
-                    raise ValueError(f"Invalid token: '{e}' is not a valid number or operator")
-        return s.pop() 
-# Python's int can handle very large numbers so I don't think I have to add any special case for that!
+                    # works for malformed and Invalid tokens
+                    raise ValueError(f"Invalid token: '{e}' is not a valid number or operator") # if we have too many operands or too less, and if we have strings other than required ones(+-*/), we raise this error.
+        return s.pop() # Python's int can handle very large numbers so I don't think I have to add any special case for that!
 
 # Main Function. Do not edit the code below
 if __name__ == "__main__":
@@ -229,7 +233,12 @@ if __name__ == "__main__":
         except ZeroDivisionError:
             assert expected == "DIVZERO", f"Test {idx} unexpected division by zero"
             print(f"Test case {idx} passed (division by zero handled)")
+            
         # I have added below value error to handle value error         
         except ValueError:
             assert expected == "INVALID", f"Test {idx} unexpected invalid input error"
             print(f"Test case {idx} passed (invalid input handled)")
+            
+# CITATION: 
+# I have used AI to help me understand how paraentheses work in Infix expressions, as well as, I asked it to generate few test cases
+# that I can use to see if my code is handling edge cases.
